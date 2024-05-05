@@ -1,0 +1,41 @@
+Procedure gradientAscentOptimizer(initial_guess, max_iters, lr_CL, lr_R, lr_H, max_volume)
+    Initialize parameters and geometry constraints:
+    
+    Unpack initial_guess into C_L, R, H
+
+    Initialize max_power and best_params with initial_guess
+
+    For iter from 1 to max_iters
+        Calculate current power and gradient using powerFunction(C_L, R, H, u0, u1, rho)
+
+        Update C_L, R, H using the gradients scaled by learning rates (lr_CL, lr_R, lr_H)
+
+        Compute new top width T and trapezoidal volume V
+
+        Apply volume constraint:
+            If V > max_volume
+                Calculate gradient ratio between R and H
+                Adjust R or H based on dominance of their respective gradients to reduce volume
+            Else
+                Check if power output can be maximized while volume is just under max_volume
+                Update C_L, R, H within their allowed ranges
+
+        Update max_power and best_params if current power is higher
+
+        Print current iteration data
+
+    Return best_params and max_power as x_opt and fval
+End Procedure
+
+Function powerFunction(C_L, R, H, u0, u1, rho)
+    Initialize sum_i for power and grad_sum for gradients
+
+    For i from 1 to 20
+        Compute wind interaction terms v, A, B
+        Compute power component for the ith term
+        Compute gradients with respect to C_L, R, H
+
+        Update sum_i and grad_sum
+
+    Return total power and gradients
+End Function
